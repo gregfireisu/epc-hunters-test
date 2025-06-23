@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epc Hunters</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="main">
+        <!-- Шапка с лого и меню -->
+        <header class="navbar">
+            <div class="navbar-logo">Epc<br>Hunters</div>
+            
+            <div class="navbar-middle">
+                <nav class="navbar-menu" id="mainMenu">
+                    <button class="menu-close" aria-label="Close menu">&times;</button>
+                    <div class="navbar-option">Loren Ipsum</div>
+                    <div class="navbar-option">Loren Ipsum</div>
+                    <div class="navbar-option">Loren Ipsum</div>
+                </nav>
+            </div>
+            
+            <div class="navbar-search">Loren Ipsum &emsp;↗</div>
+            
+            <button class="burger-menu" aria-label="Open menu" id="burgerButton">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </header>
+        
+        <!-- Основной контент -->
+        <main class="content">
+            <h1 class="content-header">Loren Ipsum</h1>
+            
+            <!-- Обертка для десктопных карточек -->
+            <div class="content-cards">
+                <div class="content-card card-1">
+                    <div class="card-logo"><p>1</p></div>
+                    <div class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+                    <object class="card-icon" type="image/svg+xml" data="img/icon.svg"></object>
+                </div>
+                <div class="content-card card-4">
+                    <div class="card-logo"><p>4</p></div>
+                    <div class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+                    <object class="card-icon" type="image/svg+xml" data="img/icon.svg"></object>
+                </div>
+                <div class="content-card card-5">
+                    <div class="card-logo"><p>5</p></div>
+                    <div class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+                    <object class="card-icon" type="image/svg+xml" data="img/icon.svg"></object>
+                </div>
+                <div class="content-card card-2">
+                    <div class="card-logo"><p>2</p></div>
+                    <div class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+                    <object class="card-icon" type="image/svg+xml" data="img/icon.svg"></object>
+                </div>
+                <div class="content-card card-3">
+                    <div class="card-logo"><p>3</p></div>
+                    <div class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+                    <object class="card-icon" type="image/svg+xml" data="img/icon.svg"></object>
+                </div>
+                <div class="content-card card-6">
+                    <div class="card-logo"><p>6</p></div>
+                    <div class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+                    <object class="card-icon" type="image/svg+xml" data="img/icon.svg"></object>
+                </div>
+            </div>
+            
+            <!-- Обертка для мобильного слайдера -->
+            <div class="content-slider">
+                <div class="slider-container" id="slider">
+                    <!-- Слайды будут вставлены через JavaScript -->
+                </div>
+                
+                <div class="slider-controls">
+                    <button class="slider-prev" aria-label="Previous slide">&lt;</button>
+                    <button class="slider-next" aria-label="Next slide">&gt;</button>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Футер с кнопкой -->
+        <footer class="footer">
+            <button class="footer-info" id="infoButton">INFO</button>
+        </footer>
+    </div>
+    
+    <!-- Попап -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <button class="popup-close" aria-label="Close popup">&times;</button>
+            <div class="popup-body">
+                <h2>Detailed Information</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
