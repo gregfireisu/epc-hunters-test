@@ -2,12 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile menu toggle - ПЕРЕРАБОТАННАЯ ВЕРСИЯ
     const burgerButton = document.getElementById('burgerButton');
     const mainMenu = document.getElementById('mainMenu');
+    const menuClose = document.querySelector('.menu-close');
     
     if (burgerButton && mainMenu) {
         burgerButton.addEventListener('click', () => {
             // Переключаем классы
             burgerButton.classList.toggle('active');
             mainMenu.classList.toggle('active');
+            menuClose.style.display = 'block';
             
             // Блокируем скролл страницы при открытом меню
             document.body.style.overflow = mainMenu.classList.contains('active') ? 'hidden' : '';
@@ -15,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Close menu - ПЕРЕРАБОТАННАЯ ВЕРСИЯ
-    const menuClose = document.querySelector('.menu-close');
     if (menuClose) {
         menuClose.addEventListener('click', () => {
             // Закрываем меню
             if (burgerButton) burgerButton.classList.remove('active');
             if (mainMenu) mainMenu.classList.remove('active');
+            menuClose.style.display = 'none';
             
             // Восстанавливаем скролл страницы
             document.body.style.overflow = '';
@@ -29,92 +31,93 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize slider only if elements exist
     const slider = document.querySelector('.slider-container');
-    const cards = document.querySelectorAll('.content-card');
-    const prevButton = document.querySelector('.slider-prev');
-    const nextButton = document.querySelector('.slider-next');
+const cards = document.querySelectorAll('.content-card');
+const prevButton = document.querySelector('.slider-prev');
+const nextButton = document.querySelector('.slider-next');
+
+if (slider && cards.length > 0 && prevButton && nextButton) {
+    let currentSlide = 0;
     
-    if (slider && cards.length > 0 && prevButton && nextButton) {
-        let currentSlide = 0;
+    // Очищаем слайдер перед добавлением карточек
+    slider.innerHTML = '';
+    
+    // Clone cards for slider and set proper width
+    cards.forEach(card => {
+        const clone = card.cloneNode(true);
+        clone.style.minWidth = 'calc(100% - 20px)'; // Одна карточка с небольшими отступами
+        clone.style.margin = '0 10px'; // Отступы между карточками
+        slider.appendChild(clone);
+    });
+    
+    // Получаем все карточки в слайдере
+    const sliderCards = slider.querySelectorAll('.content-card');
+    
+    // Функция для перехода к конкретному слайду
+    function goToSlide(index) {
+        if (sliderCards.length === 0) return;
         
-        // Очищаем слайдер перед добавлением карточек
-        slider.innerHTML = '';
+        // Корректируем индекс для циклической прокрутки
+        if (index < 0) index = sliderCards.length - 1;
+        if (index >= sliderCards.length) index = 0;
         
-        // Clone cards for slider
-        cards.forEach(card => {
-            const clone = card.cloneNode(true);
-            slider.appendChild(clone);
-        });
+        currentSlide = index;
         
-        // Получаем все карточки в слайдере
-        const sliderCards = slider.querySelectorAll('.content-card');
+        // Рассчитываем позицию для прокрутки
+        const cardWidth = sliderCards[0].offsetWidth + 20; // Ширина карточки + отступ
+        const scrollPosition = index * cardWidth;
         
-        // Функции слайдера
-        function goToSlide(index) {
-            if (sliderCards.length === 0) return;
-            
-            // Корректируем индекс для циклической прокрутки
-            if (index < 0) index = sliderCards.length - 1;
-            if (index >= sliderCards.length) index = 0;
-            
-            currentSlide = index;
-            
-            // Прокручиваем к текущему слайду
-            const cardWidth = sliderCards[0].offsetWidth;
-            slider.scrollTo({
-                left: index * cardWidth,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Навигация по слайдеру
-        prevButton.addEventListener('click', () => {
-            goToSlide(currentSlide - 1);
-        });
-        
-        nextButton.addEventListener('click', () => {
-            goToSlide(currentSlide + 1);
-        });
-        
-        // Touch swipe for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        slider.addEventListener('touchstart', e => {
-            touchStartX = e.touches[0].clientX;
-        });
-        
-        slider.addEventListener('touchmove', e => {
-            e.preventDefault(); // Предотвращаем скролл страницы
-        });
-        
-        slider.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].clientX;
-            handleSwipe();
-        });
-        
-        function handleSwipe() {
-            const diff = touchStartX - touchEndX;
-            const threshold = 50;
-            
-            // Если diff положительный - свайп влево (next)
-            // Если diff отрицательный - свайп вправо (prev)
-            if (diff > threshold) {
-                goToSlide(currentSlide + 1);
-            } else if (diff < -threshold) {
-                goToSlide(currentSlide - 1);
-            }
-        }
-        
-        // Auto-center first slide on load
-        setTimeout(() => {
-            goToSlide(0);
-        }, 100);
-        
-        // Обновляем позицию при изменении размера окна
-        window.addEventListener('resize', () => {
-            goToSlide(currentSlide);
+        // Прокручиваем к текущему слайду
+        slider.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
         });
     }
+    
+    // Навигация по слайдеру
+    prevButton.addEventListener('click', () => {
+        goToSlide(currentSlide - 1);
+    });
+    
+    nextButton.addEventListener('click', () => {
+        goToSlide(currentSlide + 1);
+    });
+    
+    // Touch swipe for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    slider.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    slider.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].clientX;
+        handleSwipe();
+    }, { passive: true });
+    
+    function handleSwipe() {
+        const diff = touchStartX - touchEndX;
+        const threshold = 50;
+        
+        if (diff > threshold) {
+            // Свайп влево - следующая карточка
+            goToSlide(currentSlide + 1);
+        } else if (diff < -threshold) {
+            // Свайп вправо - предыдущая карточка
+            goToSlide(currentSlide - 1);
+        }
+    }
+    
+    // Auto-center first slide on load
+    setTimeout(() => {
+        goToSlide(0);
+    }, 100);
+    
+    // Обновляем позицию при изменении размера окна
+    window.addEventListener('resize', () => {
+        goToSlide(currentSlide);
+    });
+}
     
     // Popup functionality
     const infoButton = document.getElementById('infoButton');
